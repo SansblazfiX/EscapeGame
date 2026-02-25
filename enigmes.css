@@ -1,0 +1,129 @@
+/* enigmes.css — styles partagés par les 4 pages d'énigmes */
+
+/* ── QUESTION BOX ── */
+.question-box {
+  background: rgba(0,229,255,.04); border: 1px solid rgba(0,229,255,.2);
+  border-radius: 6px; padding: 16px 20px; margin-bottom: 20px;
+  font-size: .9rem; line-height: 1.75;
+}
+.question-box strong { color: var(--gold); }
+.q-highlight {
+  display: inline-block;
+  background: rgba(255,196,0,.1); border: 1px solid rgba(255,196,0,.3);
+  color: var(--gold); padding: 2px 10px; border-radius: 4px;
+  font-family: 'Share Tech Mono', monospace; font-size: .85rem; margin: 0 2px;
+}
+
+/* ── ÉTAPES ── */
+.step-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.step {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 12px 16px;
+}
+.step-num { font-family: 'Orbitron', monospace; font-size: .8rem; font-weight: 700; color: var(--accent); min-width: 24px; }
+.step-text { font-size: .85rem; line-height: 1.6; }
+
+/* ── SAISIE RÉPONSE ── */
+.answer-row { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+.answer-input {
+  flex: 1; max-width: 110px; padding: 14px;
+  background: var(--surface2); border: 2px solid var(--border);
+  border-radius: 6px; font-family: 'Orbitron', monospace;
+  font-size: 1.4rem; color: var(--accent); text-align: center;
+  outline: none; transition: border-color .3s, box-shadow .3s;
+  -moz-appearance: textfield;
+}
+.answer-input::-webkit-outer-spin-button,
+.answer-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.answer-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0,229,255,.25); }
+.answer-input.error   { border-color: var(--danger); animation: shake .4s ease; }
+.answer-input.correct { border-color: var(--green); color: var(--green); }
+
+/* ── ANAGRAMMES ── */
+.anagram-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px; }
+.anagram-row {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 18px;
+  display: grid; grid-template-columns: 1fr 30px 1fr; gap: 10px; align-items: center;
+  transition: border-color .3s;
+}
+.anagram-row.solved { border-color: rgba(34,197,94,.4); }
+.anagram-scrambled { font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 700; color: var(--gold); letter-spacing: 3px; text-align: center; }
+.anagram-arrow { text-align: center; color: var(--muted); }
+.anagram-input {
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: 6px;
+  padding: 10px 12px; font-family: 'Share Tech Mono', monospace; font-size: .85rem;
+  color: var(--accent); text-align: center; outline: none; width: 100%;
+  text-transform: uppercase; letter-spacing: 2px; transition: border-color .3s;
+}
+.anagram-input:focus { border-color: var(--accent); }
+.anagram-input.correct { border-color: var(--green); color: var(--green); background: rgba(34,197,94,.05); }
+.anagram-input.wrong   { border-color: var(--danger); animation: shake .4s ease; }
+.anagram-hint { font-family: 'Share Tech Mono', monospace; font-size: .6rem; color: var(--muted); margin-top: 5px; letter-spacing: 1px; }
+
+.count-display { text-align: center; margin-bottom: 18px; }
+.count-num { font-family: 'Orbitron', monospace; font-size: 2.5rem; font-weight: 900; color: var(--accent); }
+.count-label { font-family: 'Share Tech Mono', monospace; font-size: .62rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+
+/* ── PICTOGRAMMES ── */
+.picto-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 22px; }
+.picto-card {
+  background: var(--surface2); border: 2px solid var(--border);
+  border-radius: 10px; padding: 18px 10px; text-align: center;
+  cursor: pointer; transition: all .25s; user-select: none; position: relative;
+}
+.picto-card:hover { border-color: rgba(0,229,255,.3); transform: translateY(-2px); }
+.picto-card.selected { border-color: var(--green); background: rgba(34,197,94,.08); }
+.picto-card.wrong-pick { border-color: var(--danger); background: rgba(255,34,68,.06); opacity: .6; }
+.picto-emoji { font-size: 2.4rem; display: block; margin-bottom: 8px; }
+.picto-name { font-family: 'Share Tech Mono', monospace; font-size: .62rem; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; }
+.picto-card.selected .picto-name { color: var(--green); }
+.picto-check { position: absolute; top: 6px; right: 8px; font-size: .75rem; opacity: 0; transition: opacity .2s; }
+.picto-card.selected .picto-check { opacity: 1; }
+.sel-count { text-align: center; font-family: 'Share Tech Mono', monospace; font-size: .7rem; color: var(--muted); letter-spacing: 1px; margin-bottom: 14px; }
+.sel-count span { color: var(--accent); font-family: 'Orbitron', monospace; }
+
+/* ── NARRATIVE ── */
+.story-box {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 20px 22px; margin-bottom: 18px; position: relative;
+}
+.story-watermark { position: absolute; top: 14px; right: 16px; font-size: 1.8rem; opacity: .1; }
+.story-name { font-family: 'Orbitron', monospace; font-size: .78rem; font-weight: 700; color: var(--gold); letter-spacing: 2px; margin-bottom: 12px; }
+.story-text { font-size: .88rem; line-height: 1.85; color: var(--text); }
+.story-text strong { color: var(--accent); }
+
+.tags-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
+.tag-chip { background: rgba(0,229,255,.07); border: 1px solid rgba(0,229,255,.2); border-radius: 20px; padding: 4px 14px; font-family: 'Share Tech Mono', monospace; font-size: .68rem; color: var(--accent); letter-spacing: 1px; }
+
+.choice-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.choice-btn {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--surface2); border: 2px solid var(--border);
+  border-radius: 8px; padding: 14px 18px; cursor: pointer;
+  transition: all .25s; text-align: left; width: 100%;
+}
+.choice-btn:hover { border-color: rgba(0,229,255,.4); transform: translateX(4px); }
+.choice-btn.selected { border-color: var(--accent); background: rgba(0,229,255,.06); }
+.choice-btn.correct  { border-color: var(--green);  background: rgba(34,197,94,.08); }
+.choice-btn.wrong    { border-color: var(--danger);  opacity: .6; }
+.choice-num { font-family: 'Orbitron', monospace; font-size: 1.2rem; font-weight: 900; color: rgba(255,255,255,.1); min-width: 28px; }
+.choice-title { font-family: 'Share Tech Mono', monospace; font-size: .8rem; letter-spacing: 1.5px; color: #fff; margin-bottom: 3px; }
+.choice-desc  { font-size: .72rem; color: var(--muted); line-height: 1.4; }
+.choice-btn.selected .choice-title { color: var(--accent); }
+.choice-btn.correct  .choice-title { color: var(--green); }
+
+.instr-box {
+  display: flex; gap: 12px; margin-bottom: 18px;
+  background: rgba(255,196,0,.05); border: 1px solid rgba(255,196,0,.2);
+  border-radius: 6px; padding: 12px 16px; font-size: .8rem; line-height: 1.6;
+}
+.instr-icon { font-size: 1.3rem; flex-shrink: 0; }
+.instr-box strong { color: var(--gold); }
+
+@media(max-width:480px) {
+  .anagram-row { grid-template-columns: 1fr; }
+  .anagram-arrow { display: none; }
+  .picto-grid { grid-template-columns: repeat(2,1fr); }
+}

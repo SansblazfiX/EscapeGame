@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan — Mission Orientation</title>
+<link rel="stylesheet" href="style-global.css">
+<link rel="stylesheet" href="plan.css">
+</head>
+<body>
+<div class="page-wrapper">
+  <div style="width:100%;max-width:640px">
+
+    <p class="section-label fade-up">// navigation — plan du lycée</p>
+    <h1 class="page-title fade-up d1">PLAN D'OPÉRATION</h1>
+    <p class="page-subtitle fade-up d2">Rends-toi dans chaque salle · Scanne le QR code · Résous l'énigme</p>
+
+    <p class="prog-summary fade-up d2"><span id="solved-num">0</span> / 4 missions complétées</p>
+
+    <div class="plan-grid fade-up d3" id="plan-grid"></div>
+
+    <div class="hint-box fade-up d4">
+      <strong>💡 Comment jouer ?</strong><br>
+      1. Rends-toi physiquement dans la salle indiquée.<br>
+      2. Scanne le <strong>QR code</strong> affiché sur place pour ouvrir l'énigme.<br>
+      3. Résous l'énigme pour obtenir un <strong>chiffre secret</strong>.<br>
+      4. Une fois les <strong>4 chiffres collectés</strong> → entre le code final !
+    </div>
+
+    <a href="code-final.html" class="btn-final locked fade-up d5" id="btn-final">
+      <span id="btn-final-txt">🔒 Code final — résous d'abord toutes les énigmes</span>
+    </a>
+    <a href="index.html" class="btn-back fade-up d6">← Retour à l'accueil</a>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+initPage();
+
+const ROOMS=[
+  {id:'sciences',icon:'⚗️',name:'SALLE DE SCIENCES',desc:'Énigme mathématique sur l\'histoire du lycée.',file:'enigme-sciences.html',num:'01'},
+  {id:'cdi',     icon:'📚',name:'CDI',               desc:'4 anagrammes des formations à déchiffrer.',  file:'enigme-cdi.html',      num:'02'},
+  {id:'gymnase', icon:'🏃',name:'GYMNASE',            desc:'Énigme visuelle sur les sections du lycée.', file:'enigme-gymnase.html',  num:'03'},
+  {id:'pro',     icon:'🔧',name:'PÔLE PROFESSIONNEL', desc:'Mini-histoire d\'orientation à résoudre.',   file:'enigme-pro.html',      num:'04'}
+];
+
+function render(){
+  const p=getProg(), n=countSolved();
+  document.getElementById('solved-num').textContent=n;
+  document.getElementById('plan-grid').innerHTML=ROOMS.map(r=>{
+    const done=p[r.id]!==undefined;
+    return`<a href="${r.file}" class="room-card${done?' done':''}">
+      <span class="room-num">${r.num}</span>
+      <span class="room-icon">${r.icon}</span>
+      <div class="room-name">${r.name}</div>
+      <div class="room-desc">${r.desc}</div>
+      <span class="room-status ${done?'s-done':'s-todo'}">${done?'✓ RÉSOLUE — chiffre : '+p[r.id]:'○ EN ATTENTE'}</span>
+    </a>`;
+  }).join('');
+  const btn=document.getElementById('btn-final');
+  const txt=document.getElementById('btn-final-txt');
+  if(n>=4){btn.classList.remove('locked');txt.textContent='🏆 Entrer le code final!';}
+  else{btn.classList.add('locked');txt.textContent=`🔒 Code final — encore ${4-n} énigme${4-n>1?'s':''} à résoudre`;}
+}
+render();
+</script>
+</body>
+</html>
