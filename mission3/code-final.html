@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Final — Mission Orientation</title>
+<link rel="stylesheet" href="style-global.css">
+<link rel="stylesheet" href="code-final.css">
+</head>
+<body>
+
+<!-- Overlay victoire -->
+<div class="victory-overlay" id="victory">
+  <div class="confetti-wrap" id="confetti"></div>
+  <div class="v-badge">✓ Mission accomplie</div>
+  <div class="v-icon">🏆</div>
+  <div class="v-title">ACCÈS RÉTABLI !</div>
+  <div class="v-code-label">// code secret validé</div>
+  <div class="v-code" id="v-code">— — — —</div>
+  <div class="v-time">
+    <div class="v-time-val" id="v-time">--:--</div>
+    <div class="v-time-label">Temps de mission</div>
+  </div>
+  <div class="v-msg">🎓 Félicitations ! Tu connais maintenant le lycée Albert Camus sous toutes ses coutures. Passe à l'accueil pour recevoir ton <strong>badge de super-agent orienté</strong> ! 🎉</div>
+  <div class="v-btn"><a href="index.html" onclick="resetAll()">↺ Nouvelle partie</a></div>
+</div>
+
+<div class="page-wrapper">
+<div style="width:100%;max-width:620px">
+
+  <p class="section-label fade-up">// phase finale — saisie du code</p>
+  <h1 class="page-title fade-up d1">CODE FINAL</h1>
+  <p class="page-subtitle fade-up d2">Entre les 4 chiffres collectés dans les salles pour terminer la mission.</p>
+
+  <div class="card fade-up d2">
+    <div class="card-header">
+      <div class="dot-blink" style="background:var(--gold)"></div>
+      <span class="card-header-label" style="color:var(--gold)">🏆 Récapitulatif de mission</span>
+    </div>
+    <div class="card-body">
+
+      <div class="alert-missing" id="alert-missing">
+        ⚠ <strong>Attention !</strong> Il te manque encore des énigmes. Les cases manquantes sont en rouge.
+      </div>
+
+      <p class="section-label">// chiffres collectés</p>
+      <div class="recap-grid" id="recap"></div>
+
+      <p class="section-label" style="margin-top:20px">// entre le code à 4 chiffres</p>
+      <div class="code-inputs">
+        <input type="number" class="code-digit" id="d0" min="0" max="9">
+        <input type="number" class="code-digit" id="d1" min="0" max="9">
+        <input type="number" class="code-digit" id="d2" min="0" max="9">
+        <input type="number" class="code-digit" id="d3" min="0" max="9">
+      </div>
+
+      <button class="btn-unlock" onclick="submit()"><span>🔓 DÉVERROUILLER</span></button>
+      <div class="feedback fb-error" id="fb-error"></div>
+
+    </div>
+  </div>
+  <a href="plan.html" class="btn-back fade-up d4">← Retour au plan</a>
+
+</div>
+</div>
+
+<script src="script.js"></script>
+<script>
+initPage();
+const CODE=['6','4','3','4'];
+const ROOMS=[
+  {id:'sciences',icon:'⚗️',label:'Sciences'},
+  {id:'cdi',     icon:'📚',label:'CDI'},
+  {id:'gymnase', icon:'🏃',label:'Gymnase'},
+  {id:'pro',     icon:'🔧',label:'Pôle Pro'},
+];
+
+function renderRecap(){
+  const p=getProg();let miss=false;
+  document.getElementById('recap').innerHTML=ROOMS.map((r,i)=>{
+    const d=p[r.id];const ok=d!==undefined;if(!ok)miss=true;
+    return`<div class="recap-cell ${ok?'acquired':'missing'}">
+      <div class="recap-room">${r.label}</div>
+      <span class="recap-icon">${r.icon}</span>
+      <div class="recap-digit">${ok?d:'?'}</div>
+    </div>`;
+  }).join('');
+  if(miss)document.getElementById('alert-missing').style.display='block';
+  // Pré-remplir
+  ROOMS.forEach((r,i)=>{
+    const d=getProg()[r.id];
+    if(d!==undefined){
+      const inp=document.getElementById(`d${i}`);
+      inp.value=d;inp.classList.add('auto');inp.readOnly=true;
+    }
+  });
+}
+
+// navigation clavier
+[0,1,2,3].forEach((i,_,a)=>{
+  const inp=document.getElementById(`d${i}`);
+  inp.addEventListener('input',()=>{if(inp.value.length>=1&&i<3)document.getElementById(`d${i+1}`).focus();});
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')submit();if(e.key==='Backspace'&&!inp.value&&i>0)document.getElementById(`d${i-1}`).focus();});
+});
+
+function submit(){
+  const vals=[0,1,2,3].map(i=>document.getElementById(`d${i}`).value.trim());
+  document.getElementById('fb-error').style.display='none';
+  [0,1,2,3].forEach(i=>document.getElementById(`d${i}`).classList.remove('error','win'));
+  if(vals.some(v=>v==='')){
+    document.getElementById('fb-error').style.display='block';
+    document.getElementById('fb-error').textContent='❌ Remplis les 4 cases avant de valider !';return;
+  }
+  if(JSON.stringify(vals)===JSON.stringify(CODE)){
+    [0,1,2,3].forEach(i=>document.getElementById(`d${i}`).classList.add('win'));
+    setTimeout(victory,600);
+  } else {
+    [0,1,2,3].forEach(i=>{if(!document.getElementById(`d${i}`).readOnly)document.getElementById(`d${i}`).classList.add('error');});
+    setTimeout(()=>[0,1,2,3].forEach(i=>document.getElementById(`d${i}`).classList.remove('error')),500);
+    document.getElementById('fb-error').style.display='block';
+    document.getElementById('fb-error').textContent='❌ Code incorrect ! Vérifie tes chiffres.';
+  }
+}
+
+function victory(){
+  const s=Math.floor((Date.now()-parseInt(localStorage.getItem('missionStart')||Date.now()))/1000);
+  document.getElementById('v-time').textContent=`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  document.getElementById('v-code').textContent=CODE.join(' — ');
+  // Confettis
+  const colors=['#00e5ff','#ffc400','#22c55e','#ff4d00','#a855f7'];
+  const wrap=document.getElementById('confetti');
+  for(let i=0;i<70;i++){
+    const p=document.createElement('div');p.className='particle';
+    p.style.cssText=`left:${Math.random()*100}%;width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;background:${colors[~~(Math.random()*5)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*2}s;`;
+    wrap.appendChild(p);
+  }
+  document.getElementById('victory').classList.add('visible');
+}
+
+renderRecap();
+</script>
+</body>
+</html>

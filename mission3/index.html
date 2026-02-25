@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission Orientation — Lycée Albert Camus</title>
+
+<style>
+/* ── ACCUEIL SPÉCIFIQUE ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 30px 20px 50px;
+  position: relative; z-index: 2;
+}
+
+.header-badge {
+  font-family: 'Share Tech Mono', monospace; font-size: 0.68rem;
+  letter-spacing: 3px; color: var(--accent);
+  border: 1px solid rgba(0,229,255,0.3); padding: 5px 18px;
+  border-radius: 2px; margin-bottom: 30px;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+
+.logo-wrap { text-align: center; margin-bottom: 10px; animation: fadeUp 0.7s 0.4s ease both; }
+.logo-icon {
+  font-size: 4rem; display: block; margin-bottom: 8px;
+  filter: drop-shadow(0 0 25px rgba(0,229,255,0.5));
+  animation: iconPulse 3s ease-in-out infinite;
+}
+@keyframes iconPulse {
+  0%,100% { filter: drop-shadow(0 0 20px rgba(0,229,255,0.5)); }
+  50%      { filter: drop-shadow(0 0 40px rgba(0,229,255,0.9)); }
+}
+
+h1 {
+  font-family: 'Orbitron', monospace; font-size: clamp(2rem,6vw,3.8rem);
+  font-weight: 900; letter-spacing: 6px; text-transform: uppercase;
+  color: #fff; text-shadow: 0 0 40px rgba(0,229,255,0.4);
+  line-height: 1; animation: glitch 6s infinite;
+}
+@keyframes glitch {
+  0%,90%,100% { text-shadow: 0 0 40px rgba(0,229,255,0.4); }
+  91% { text-shadow: -3px 0 var(--accent2), 3px 0 var(--accent); }
+  93% { text-shadow: 3px 0 var(--accent2), -3px 0 var(--accent); }
+}
+
+.title-accent { color: var(--accent); display: block; font-size: clamp(1rem,3vw,1.6rem); font-weight: 400; letter-spacing: 10px; margin-top: 6px; text-shadow: 0 0 20px rgba(0,229,255,0.5); }
+.lycee-name { font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 3px; margin-top: 10px; text-transform: uppercase; }
+
+/* Dossier */
+.dossier {
+  margin-top: 36px; width: 100%; max-width: 620px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+  overflow: hidden; animation: fadeUp 0.7s 0.7s ease both;
+  box-shadow: 0 0 50px rgba(0,0,0,0.5), 0 0 20px rgba(0,229,255,0.04);
+}
+.dossier-header {
+  background: rgba(255,77,0,0.1); border-bottom: 1px solid rgba(255,77,0,0.25);
+  padding: 10px 20px; display: flex; align-items: center; gap: 10px;
+}
+.dossier-header .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent2); animation: blink 1.5s ease-in-out infinite; }
+.dossier-header span { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; letter-spacing: 2px; color: var(--accent2); text-transform: uppercase; }
+.dossier-body { padding: 28px; }
+
+.scenario-label { font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; }
+.scenario-text {
+  font-size: 0.92rem; line-height: 1.85; font-style: italic; font-weight: 300;
+  border-left: 2px solid var(--accent); padding-left: 16px; margin-bottom: 24px;
+  color: var(--text); overflow: hidden; white-space: nowrap;
+  animation: typing 2.5s steps(120,end) 1.2s both, blink-cur 0.8s step-end 1.2s 4;
+}
+@media(max-width:480px){ .scenario-text { white-space: normal; animation: none; } }
+@keyframes typing { from{width:0;} to{width:100%;} }
+@keyframes blink-cur { 50%{border-left-color:transparent;} }
+
+.scenario-text strong { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Missions row */
+.missions-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 24px; }
+.mission-chip { background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.12); border-radius: 6px; padding: 12px 6px; text-align: center; transition: all 0.3s; }
+.mission-chip:hover { border-color: rgba(0,229,255,0.35); background: rgba(0,229,255,0.08); transform: translateY(-2px); }
+.m-icon { font-size: 1.4rem; display: block; margin-bottom: 5px; }
+.m-name { font-family: 'Share Tech Mono', monospace; font-size: 0.58rem; letter-spacing: 1px; color: var(--accent); text-transform: uppercase; }
+
+/* Timer */
+.timer-row { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding: 12px 16px; background: rgba(255,196,0,0.05); border: 1px solid rgba(255,196,0,0.18); border-radius: 6px; }
+.timer-display { font-family: 'Orbitron', monospace; font-size: 1.7rem; font-weight: 700; color: var(--gold); letter-spacing: 3px; text-shadow: 0 0 15px rgba(255,196,0,0.4); }
+.timer-label { font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+
+/* Bouton start */
+.btn-start {
+  display: block; width: 100%; padding: 18px; background: transparent;
+  border: 2px solid var(--accent); border-radius: 6px; color: var(--accent);
+  font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 700;
+  letter-spacing: 6px; text-transform: uppercase; cursor: pointer;
+  position: relative; overflow: hidden; transition: color 0.3s;
+  text-decoration: none; text-align: center;
+}
+.btn-start::before { content: ''; position: absolute; inset: 0; background: var(--accent); transform: translateX(-101%); transition: transform 0.35s ease; z-index: 0; }
+.btn-start:hover::before { transform: translateX(0); }
+.btn-start:hover { color: var(--bg); }
+.btn-start span { position: relative; z-index: 1; }
+
+/* Footer */
+.footer-hints {
+  margin-top: 30px; display: flex; gap: 20px; flex-wrap: wrap;
+  justify-content: center; animation: fadeUp 0.6s 1s ease both;
+}
+.hint-item { font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 1.5px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; }
+.hint-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: blink 2s ease-in-out infinite; }
+
+@media(max-width:480px){ .missions-row{grid-template-columns:repeat(2,1fr);} .dossier-body{padding:20px 16px;} }
+</style>
+</head>
+<body>
+
+<div class="hero">
+
+  <div class="header-badge">⚡ Journée Portes Ouvertes — 21 Mars 2026</div>
+
+  <div class="logo-wrap">
+    <span class="logo-icon">🔐</span>
+    <h1>Mission<span class="title-accent">Orientation</span></h1>
+    <p class="lycee-name">Lycée Albert Camus · Firminy</p>
+  </div>
+
+  <div class="dossier">
+    <div class="dossier-header">
+      <div class="dot"></div>
+      <span>⚠ Dossier classifié — Accès autorisé</span>
+    </div>
+    <div class="dossier-body">
+
+      <p class="scenario-label">// Briefing de mission</p>
+      <p class="scenario-text">
+        Ce matin, les <strong>codes d'accès secrets</strong> du lycée ont mystérieusement disparu.
+        Votre mission : résoudre <strong>4 énigmes</strong> dans les salles du lycée
+        pour reconstituer le <strong>code final</strong> et sauver la situation !
+      </p>
+
+      <p class="scenario-label">// Vos 4 zones d'intervention</p>
+      <div class="missions-row">
+        <div class="mission-chip"><span class="m-icon">⚗️</span><span class="m-name">Sciences</span></div>
+        <div class="mission-chip"><span class="m-icon">📚</span><span class="m-name">CDI</span></div>
+        <div class="mission-chip"><span class="m-icon">🏃</span><span class="m-name">Gymnase</span></div>
+        <div class="mission-chip"><span class="m-icon">🔧</span><span class="m-name">Pôle Pro</span></div>
+      </div>
+
+      <div class="timer-row">
+        <span style="font-size:1.4rem">⏱</span>
+        <div>
+          <div class="timer-display" id="home-timer">00:00</div>
+          <div class="timer-label">Chronomètre de mission</div>
+        </div>
+      </div>
+
+      <a href="plan.html" class="btn-start" onclick="launchMission()">
+        <span>▶ &nbsp; Lancer la mission</span>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="footer-hints">
+    <div class="hint-item"><div class="hint-dot"></div> Scanne les QR codes sur place</div>
+    <div class="hint-item"><div class="hint-dot"></div> Collecte les 4 chiffres</div>
+    <div class="hint-item"><div class="hint-dot"></div> Entre le code final pour gagner</div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+<script>
+buildBg();
+
+// Timer maison (pas de navbar sur accueil)
+let homeTimer;
+function startHomeTimer() {
+  function tick() {
+    const start = parseInt(localStorage.getItem('missionStart') || Date.now());
+    const s = Math.floor((Date.now() - start) / 1000);
+    const m = String(Math.floor(s / 60)).padStart(2,'0');
+    const sec = String(s % 60).padStart(2,'0');
+    document.getElementById('home-timer').textContent = `${m}:${sec}`;
+  }
+  tick();
+  homeTimer = setInterval(tick, 1000);
+}
+if (localStorage.getItem('missionStart')) startHomeTimer();
+
+function launchMission() {
+  resetProgress();
+  localStorage.setItem('missionStart', Date.now());
+  clearInterval(homeTimer);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+/* plan.css — styles spécifiques à la page plan */
+
+.prog-summary {
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: .72rem; color: var(--muted); letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+.prog-summary span {
+  color: var(--accent);
+  font-family: 'Orbitron', monospace; font-size: 1.1rem;
+}
+
+/* Grille des salles */
+.plan-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; width: 100%; max-width: 640px; margin-bottom: 20px;
+}
+
+.room-card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px 18px;
+  text-decoration: none; display: block;
+  position: relative; overflow: hidden;
+  transition: border-color .3s, transform .2s, box-shadow .3s;
+}
+.room-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--accent);
+  transform: scaleX(0); transition: transform .3s ease; transform-origin: left;
+}
+.room-card:hover { border-color: rgba(0,229,255,.4); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,.35); }
+.room-card:hover::before { transform: scaleX(1); }
+.room-card.done { border-color: rgba(34,197,94,.4); }
+.room-card.done::before { background: var(--green); transform: scaleX(1); }
+
+.room-num { position: absolute; top: 12px; right: 14px; font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 900; color: rgba(255,255,255,.05); }
+.room-icon { font-size: 2.2rem; margin-bottom: 10px; display: block; }
+.room-name { font-family: 'Orbitron', monospace; font-size: .78rem; font-weight: 700; letter-spacing: 2px; color: #fff; margin-bottom: 6px; }
+.room-desc { font-size: .72rem; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+.room-status { display: inline-flex; align-items: center; gap: 5px; font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 3px; }
+.s-todo { border: 1px solid var(--muted); color: var(--muted); }
+.s-done { border: 1px solid var(--green); color: var(--green); background: rgba(34,197,94,.08); }
+
+/* Boîte d'aide */
+.hint-box {
+  width: 100%; max-width: 640px; padding: 14px 18px;
+  background: rgba(0,229,255,.04); border: 1px solid rgba(0,229,255,.15);
+  border-radius: 6px; font-family: 'Share Tech Mono', monospace;
+  font-size: .72rem; color: var(--muted); line-height: 1.8; margin-bottom: 16px;
+}
+.hint-box strong { color: var(--accent); }
+
+/* Bouton final */
+.btn-final {
+  display: block; width: 100%; max-width: 640px; padding: 18px;
+  background: transparent; border: 2px solid var(--gold); border-radius: 6px;
+  color: var(--gold); font-family: 'Orbitron', monospace; font-size: .9rem;
+  font-weight: 700; letter-spacing: 4px; cursor: pointer;
+  position: relative; overflow: hidden; transition: color .3s;
+  text-decoration: none; text-align: center;
+}
+.btn-final::before { content: ''; position: absolute; inset: 0; background: var(--gold); transform: translateX(-101%); transition: transform .35s; z-index: 0; }
+.btn-final:hover::before { transform: translateX(0); }
+.btn-final:hover { color: var(--bg); }
+.btn-final span { position: relative; z-index: 1; }
+.btn-final.locked { opacity: .35; cursor: not-allowed; pointer-events: none; }
+
+@media(max-width:480px) { .plan-grid { grid-template-columns: 1fr; } }
